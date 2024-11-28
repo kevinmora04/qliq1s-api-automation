@@ -1,3 +1,8 @@
 node_modules/
 .DS_Store
 cypress.env.json
+.idea/vcs.xml
+.idea/workspace.xml
+cypress/cypress/fixtures/example.json
+cypress/cypress/support/commands.js
+cypress/cypress/support/e2e.js
