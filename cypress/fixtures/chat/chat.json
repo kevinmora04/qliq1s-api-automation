@@ -1,0 +1,26 @@
+{
+  "userAzureId": "8:acs:902cdda2-2532-46e6-a252-902047737edf_00000022-787e-5047-6763-563a0d00f296",
+  "chatId": "19:acsV1_G71iZUmEK9fFxtwzWqXjDF_jBGRB2Z6me03IN_GQ3pY1@thread.v2",
+  "initiator": {
+    "azureId": "8:acs:902cdda2-2532-46e6-a252-902047737edf_00000022-787e-5047-6763-563a0d00f296",
+    "name": "kevinmora47"
+  },
+  "participants": [
+    {
+      "id": "8:acs:902cdda2-2532-46e6-a252-902047737edf_00000023-12a9-d924-df68-563a0d00924c",
+      "name": "Israel"
+    }
+  ],
+  "newParticipant": {
+    "id": "8:acs:902cdda2-2532-46e6-a252-902047737edf_00000022-787e-bff3-c811-24482200d309",
+    "name": "New Participant"
+  },
+  "participantToRemove": {
+    "id": "8:acs:902cdda2-2532-46e6-a252-902047737edf_00000022-787e-bff3-c811-24482200d309",
+    "name": "New Participant"
+  },
+  "currentMessageId": "1732800553030",
+  "topic": "Automated Endpoint Topic",
+  "profilePicture": "",
+  "chatType": 0
+}
