@@ -8,3 +8,4 @@ cypress/cypress/support/commands.js
 cypress/cypress/support/e2e.js
 .vscode/settings.json
 .vscode/settings.json
+.vscode/settings.json

@@ -5,7 +5,12 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "**/Thumbs.db": true
+        "**/Thumbs.db": true,
+        "**/node_modules": true,
+        "node_modules": true,
+        "**/.vscode": true,
+        ".vscode": true
     },
-    "hide-files.files": []
+    "hide-files.files": [],
+    "explorerExclude.backup": {}
 }

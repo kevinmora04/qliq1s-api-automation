@@ -1,0 +1,14 @@
+{
+    "userId": "8:acs:902cdda2-2532-46e6-a252-902047737edf_00000022-787e-5047-6763-563a0d00f296",
+    "subject": "Support",
+    "description": "Need Help",
+    "version": "1",
+    "environment": "1",
+    "os": "2",
+    "connection": "Yes",
+    "deviceModel": "Model 1",
+    "freeMemory": "1 Gb",
+    "totalMemory": "8 Gb",
+    "attachment": "feedback/screenshot.jpg"
+  }
+  
