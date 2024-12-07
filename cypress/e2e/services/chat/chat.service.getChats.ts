@@ -1,5 +1,5 @@
-import { ChatResponse } from '../../interfaces/chat/chat-response';
 import { BaseService } from '../base/base.service';
+import { ChatResponse } from './chat.service.types';
 
 class GetChatsService extends BaseService {
   execute(userAzureId: string): Cypress.Chainable<ChatResponse> {

@@ -41,14 +41,14 @@ export interface Friend {
   }
   
   export interface ConnectRequest {
-    userId: string; // The ID of the user making the request
-    senderUserName: string; // The username of the sender
-    toUserId: string; // The ID of the user to connect with
-    friendAction: number; // The action to perform (e.g., Add, UnFriend, Block, etc.)
+    userId: string; 
+    senderUserName: string; 
+    toUserId: string; 
+    friendAction: number; 
   }
   
   export interface ConnectResponse {
-    StatusCode: number; // HTTP Status Code returned from the API
-    Message: string; // Message indicating the success or failure of the request
-    Data?: any; // Additional data (optional)
+    StatusCode: number;
+    Message: string;
+    Data?: any;
   }

@@ -16,9 +16,9 @@ describe('Connections API Tests', () => {
       senderUserName = data.senderUserName;
       toUserId = data.toUserId;
       friendAction = data.friendAction;
-      pageNumber = data.pageNumber || 1; // Default to 1 if not provided
-      pageSize = data.pageSize || 10;   // Default to 10 if not provided
-      authToken = Cypress.env('authToken'); // Retrieve the token from cypress.env.json
+      pageNumber = data.pageNumber || 1; 
+      pageSize = data.pageSize || 10;   
+      authToken = Cypress.env('authToken');
       if (!authToken) throw new Error('❌ Auth token is missing in Cypress environment');
       cy.log('✅ Test configuration and token loaded successfully');
     });
@@ -68,10 +68,8 @@ describe('Connections API Tests', () => {
       .then((response) => {
         cy.log(`📨 Connect Response: ${JSON.stringify(response, null, 2)}`);
   
-        // Assert response status code
         expect(response.StatusCode).to.eq(200, 'Expected StatusCode to be 200');
     
-        // Validate response data
         expect(response.Data).to.include({
           Status: 'Success',
         });

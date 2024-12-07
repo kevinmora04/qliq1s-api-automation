@@ -1,23 +1,32 @@
+import { Logger } from '../../../support/logger';
 import { BaseService } from '../base/base.service';
 import { ApiResponse, DeleteChatParams } from './chat.service.types';
 
 class DeleteChatService extends BaseService {
   execute(params: DeleteChatParams): Cypress.Chainable<ApiResponse> {
-    return cy.request({
-      method: 'DELETE',
-      url: `${Cypress.config('baseUrl')}/Chat/DeleteChatThread`,
-      headers: { 'Content-Type': 'application/json' },
-      body: params
-    }).then(this.handleResponse('Failed to delete chat thread'));
-  }
+    Logger.info('Starting DeleteChatThread operation');
+    Logger.debug('DeleteChatThread request parameters', params);
 
-  private handleResponse(errorMessage: string) {
-    return (response: any) => {
-      if (response.status !== 200) {
-        throw new Error(`${errorMessage}: ${response.status}`);
+    return this.request<ApiResponse>('DELETE', '/Chat/DeleteChatThread', {
+      headers: { 'Content-Type': 'application/json' },
+      body: params,
+    }).then((response) => {
+      Logger.debug('DeleteChatThread response received', { response });
+
+      if (response.StatusCode === 200) {
+        Logger.info('DeleteChatThread operation completed successfully', {
+          statusCode: response.StatusCode,
+          message: response.Message,
+        });
+      } else {
+        Logger.error('DeleteChatThread operation failed', {
+          statusCode: response.StatusCode,
+          message: response.Message,
+        });
       }
-      return response.body;
-    };
+
+      return response;
+    });
   }
 }
 

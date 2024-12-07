@@ -1,11 +1,20 @@
+import { Logger } from '../../../support/logger';
 import { BaseService } from '../base/base.service';
 import { ApiResponse, CreateChatParams } from './chat.service.types';
 
 class CreateChatService extends BaseService {
   execute(params: CreateChatParams): Cypress.Chainable<ApiResponse> {
-    return cy.request({
-      method: 'POST',
-      url: `${Cypress.config('baseUrl')}/Chat/CreateChat`,
+    Logger.info('Starting CreateChat operation');
+    Logger.debug('CreateChat request parameters', {
+      InitiatorUserAzureId: params.initiatorUserAzureId,
+      InitiatorUserName: params.initiatorUserName,
+      participantsJson: params.participantsJson,
+      Topic: params.topic,
+      ProfilePicture: params.profilePicture,
+      ChatType: params.chatType,
+    });
+
+    return this.request<ApiResponse>('POST', '/Chat/CreateChat', {
       form: true,
       headers: { 'Content-Type': 'multipart/form-data' },
       body: {
@@ -14,18 +23,25 @@ class CreateChatService extends BaseService {
         participantsJson: params.participantsJson,
         Topic: params.topic,
         ProfilePicture: params.profilePicture,
-        ChatType: params.chatType
-      }
-    }).then(this.handleResponse('Failed to create chat'));
-  }
+        ChatType: params.chatType,
+      },
+    }).then((response) => {
+      Logger.debug('CreateChat response received', { response });
 
-  private handleResponse(errorMessage: string) {
-    return (response: any) => {
-      if (response.status !== 200) {
-        throw new Error(`${errorMessage}: ${response.status}`);
+      if (response.StatusCode === 200) {
+        Logger.info('CreateChat operation completed successfully', {
+          statusCode: response.StatusCode,
+          message: response.Message,
+        });
+      } else {
+        Logger.error('CreateChat operation failed', {
+          statusCode: response.StatusCode,
+          message: response.Message,
+        });
       }
-      return response.body;
-    };
+
+      return response;
+    });
   }
 }
 

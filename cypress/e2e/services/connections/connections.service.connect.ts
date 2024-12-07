@@ -10,7 +10,7 @@ class ConnectService extends BaseService {
       UserId: connectRequest.userId,
       SenderUserName: connectRequest.senderUserName,
       ToUserId: connectRequest.toUserId,
-      FriendAction: connectRequest.friendAction.toString(),
+      FriendAction: connectRequest.friendAction.toString(),    
     };
 
     return cy
@@ -20,7 +20,7 @@ class ConnectService extends BaseService {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
-        form: true, // Send data as application/x-www-form-urlencoded
+        form: true,
         body: data,
         failOnStatusCode: false,
       })
@@ -30,7 +30,6 @@ class ConnectService extends BaseService {
           message: JSON.stringify(response, null, 2),
         });
 
-        // Return the response body as the actual response
         return response.body as ConnectResponse;
       });
   }

@@ -1,4 +1,3 @@
-// feedback.service.sendFeedback.ts
 import { BaseService } from '../base/base.service';
 import { FeedbackRequest, FeedbackResponse } from './feedback.service.types';
 
@@ -8,7 +7,7 @@ class SendFeedbackService extends BaseService {
       method: 'POST',
       url: `${Cypress.config('baseUrl')}/FeedBack/SendFeedback`,
       qs: { userId: feedbackRequest.userId },
-      form: true,  // This tells Cypress to handle form data
+      form: true, 
       body: {
         Subject: feedbackRequest.subject,
         Description: feedbackRequest.description,

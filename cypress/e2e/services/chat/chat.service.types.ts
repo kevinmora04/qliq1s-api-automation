@@ -33,3 +33,34 @@ export interface CreateChatParams {
     Message: string;
     Data: T;
   }
+
+  export interface ChatThreadItem {
+    Id: string;
+    Topic: string;
+    DeletedOn: string | null;
+    LastMessageReceivedOn: string | null;
+  }
+
+  export interface Participant {
+    AzureId: string;
+    UserId: string;
+    Name: string;
+    IsAdmin: string;
+    ProfilePicture: string;
+  }
+
+  export interface ChatData {
+    ChatThreadItem: ChatThreadItem;
+    LastMessageContent: string;
+    LastMessageSender: string;
+    NotReadCount: number;
+    ChatType: string;
+    Participants: Participant[];
+    ProfilePictureUrl: string;
+  }
+
+  export interface ChatResponse {
+    StatusCode: number;
+    Message: string;
+    Data: ChatData[];
+  }

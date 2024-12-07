@@ -3,7 +3,7 @@ import { GetFriendsResponse } from './connections.service.types';
 
 class GetFriendsService extends BaseService {
   execute(userId: string, pageNumber: number, pageSize: number): Cypress.Chainable<GetFriendsResponse> {
-    const token = Cypress.env('authToken'); // Retrieve the token from cypress.env.json
+    const token = Cypress.env('authToken');
 
     return cy.request({
       method: 'GET',
@@ -15,7 +15,7 @@ class GetFriendsService extends BaseService {
       },
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`, // Use the token here
+        'Authorization': `Bearer ${token}`,
       },
     }).then(this.handleResponse('Failed to fetch friends'));
   }
