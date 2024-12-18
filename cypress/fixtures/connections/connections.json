@@ -4,6 +4,7 @@
     "pageSize": 10,
     "senderUserName": "ernes",
     "toUserId": "75d83787-8f3a-4b0f-9d87-5c42e22c1f4d",
-    "friendAction": 9
+    "friendAction": 9,
+    "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJRbGlxMXNBcGkiLCJhdWQiOiJRbGlxMXNBcGkifQ.AISjAwB4WJE4PA2VGy3r1lQVFNT1elkaPN8Tp18sBEo"
   }
   

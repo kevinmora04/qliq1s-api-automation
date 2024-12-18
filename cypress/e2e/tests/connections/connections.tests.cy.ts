@@ -17,10 +17,10 @@ describe('Connections API Tests', () => {
       toUserId = data.toUserId;
       friendAction = data.friendAction;
       pageNumber = data.pageNumber || 1; 
-      pageSize = data.pageSize || 10;   
-      
-      // Try to get token from environment variables first, then fall back to cypress.env.json
-      authToken = Cypress.env('CYPRESS_AUTH_TOKEN') || Cypress.env('authToken');
+      pageSize = data.pageSize || 10;  
+      authToken = data.authToken || "No valid token";
+
+      cy.log("Token actual value: " + authToken); 
       
       if (!authToken) {
         throw new Error('[ERROR] Auth token is missing in environment variables and Cypress environment');
