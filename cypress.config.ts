@@ -3,30 +3,32 @@ import { defineConfig } from "cypress";
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
-      // Get environment from command line or default to 'local'
-      const env = process.env.CYPRESS_ENV || config.env.env || 'local';
-      
-      // Load environments from config
-      const envConfig = config.env as { environments?: { [key: string]: string } };
-      const environments = envConfig.environments;
+      // Get environment from command line or GitHub Actions
+      const targetEnv = process.env.CYPRESS_ENV || 
+                       (config.env && config.env.env) || 
+                       'local';
 
-      if (!environments) {
-        throw new Error("Environments configuration is missing.");
-      }
+      // Load environments configuration
+      const environments = {
+        local: "http://localhost:5261/api",
+        uat: "https://uat-api.qliq1s.com/api",
+        prod: "https://api.qliq1s.com/api"
+      };
 
-      // Use provided baseUrl or fall back to environments config
-      config.baseUrl = process.env.CYPRESS_BASE_URL || environments[env];
+      // Set baseUrl based on environment
+      config.baseUrl = process.env.CYPRESS_BASE_URL || environments[targetEnv];
 
       if (!config.baseUrl) {
-        throw new Error(`Base URL for environment '${env}' is not defined.`);
+        throw new Error(`Base URL for environment '${targetEnv}' is not defined.`);
       }
 
-      // Set auth token from environment variable if provided
+      // Set auth token if provided
       if (process.env.CYPRESS_AUTH_TOKEN) {
+        config.env = config.env || {};
         config.env.authToken = process.env.CYPRESS_AUTH_TOKEN;
       }
 
-      console.log(`Using environment: ${env} with baseUrl: ${config.baseUrl}`);
+      console.log(`Using environment: ${targetEnv} with baseUrl: ${config.baseUrl}`);
 
       return config;
     },
@@ -35,6 +37,6 @@ export default defineConfig({
       openMode: 0
     },
   },
-  viewportWidth: 2200, 
+  viewportWidth: 2200,
   viewportHeight: 1400,
 });

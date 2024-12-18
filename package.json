@@ -4,6 +4,14 @@
     "cypress-mochawesome-reporter": "^3.8.2",
     "typescript": "^5.5.4"
   },
+  "scripts": {
+    "cy:open:local": "cypress open --env env=local",
+    "cy:open:uat": "cypress open --env env=uat",
+    "cy:open:prod": "cypress open --env env=prod",
+    "cy:run:local": "cypress run --env env=local",
+    "cy:run:uat": "cypress run --env env=uat",
+    "cy:run:prod": "cypress run --env env=prod"
+  },
   "dependencies": {
     "cypress-plugin-api": "^2.11.2"
   }
