@@ -19,8 +19,6 @@ describe('Connections API Tests', () => {
       pageNumber = data.pageNumber || 1; 
       pageSize = data.pageSize || 10;  
       authToken = data.authToken || "No valid token";
-
-      cy.log("Token actual value: " + authToken); 
       
       if (!authToken) {
         throw new Error('[ERROR] Auth token is missing in environment variables and Cypress environment');
