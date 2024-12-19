@@ -6,7 +6,6 @@ jobs:
     environment: uat
     env:
       CYPRESS_BASE_URL: 'https://uat-api.qliq1s.com/api'
-      CYPRESS_authToken: ${{ secrets.CYPRESS_AUTH_TOKEN }}
 
       NODE_ENV: 'test'
     steps:
