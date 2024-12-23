@@ -25,6 +25,7 @@ describe('Connections API Tests', () => {
       }
       
       cy.log('[INFO] Test configuration and token loaded successfully');
+      cy.log('[INFO] Test configuration and token loaded successfully');
     });
   });
 
