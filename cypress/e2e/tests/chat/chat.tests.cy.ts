@@ -24,7 +24,6 @@ describe('Chat API Integration Tests', () => {
       participantsJson = JSON.stringify(data.participants);
       newParticipantId = data.newParticipant.id;
 
-      cy.log('✅ Test configuration loaded successfully');
     });
   });
 
