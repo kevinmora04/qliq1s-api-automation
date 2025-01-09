@@ -8,6 +8,7 @@ import { getTokenService } from './chat.service.getToken';
 import { removeParticipantService } from './chat.service.removeParticipant';
 import { sendMessageService } from './chat.service.sendMessage';
 import { updateMessageService } from './chat.service.updateMessage';
+import { getChatByIdService } from './chat.service.getChatById';
 
 export const chatService = {
   sendMessage: sendMessageService.execute.bind(sendMessageService),
@@ -20,6 +21,7 @@ export const chatService = {
   getChats: getChatsService.execute.bind(getChatsService),
   addParticipant: addParticipantService.execute.bind(addParticipantService),
   removeParticipant: removeParticipantService.execute.bind(removeParticipantService),
+  getChatById: getChatByIdService.execute.bind(getChatByIdService),
 };
 
 export * from './chat.service.types';

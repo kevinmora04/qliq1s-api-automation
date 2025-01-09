@@ -1,3 +1,5 @@
+// cypress/e2e/chat/chat.test.cy.ts
+
 import { chatService, CreateChatParams, DeleteChatParams, SendMessageParams, UpdateMessageParams } from '../../services/chat';
 
 describe('Chat API Integration Tests', () => {
@@ -23,7 +25,6 @@ describe('Chat API Integration Tests', () => {
 
       participantsJson = JSON.stringify(data.participants);
       newParticipantId = data.newParticipant.id;
-
     });
   });
 
@@ -55,30 +56,29 @@ describe('Chat API Integration Tests', () => {
           participantsJson,
           topic,
           profilePicture,
-          chatType
+          chatType,
         };
 
         cy.wrap(null).then(() => {
-          return chatService.createChat(createChatParams)
-            .then((response) => {
-              cy.log(`📨 Create Chat Response: ${JSON.stringify(response, null, 2)}`);
-              expect(response.StatusCode, 'Create chat response status should be 200').to.eq(200);
+          return chatService.createChat(createChatParams).then((response) => {
+            cy.log(`📨 Create Chat Response: ${JSON.stringify(response, null, 2)}`);
+            expect(response.StatusCode, 'Create chat response status should be 200').to.eq(200);
 
-              let chatId: string;
-              if (response.Message === 'Chat created') {
-                expect(response.Data, 'New chat should have ChatId').to.have.property('ChatId');
-                chatId = response.Data.ChatId;
-                cy.log('✅ New chat created successfully');
-              } else if (response.Message === 'Chat already exist') {
-                chatId = response.Data?.ChatId;
-                cy.log('ℹ️ Using existing chat');
-              } else {
-                throw new Error(`❌ Unexpected response message: ${response.Message}`);
-              }
+            let chatId: string;
+            if (response.Message === 'Chat created') {
+              expect(response.Data, 'New chat should have ChatId').to.have.property('ChatId');
+              chatId = response.Data.ChatId;
+              cy.log('✅ New chat created successfully');
+            } else if (response.Message === 'Chat already exist') {
+              chatId = response.Data?.ChatId;
+              cy.log('ℹ️ Using existing chat');
+            } else {
+              throw new Error(`❌ Unexpected response message: ${response.Message}`);
+            }
 
-              cy.log(`📋 Chat ID: ${chatId}`);
-              Cypress.env('currentChatId', chatId);
-            });
+            cy.log(`📋 Chat ID: ${chatId}`);
+            Cypress.env('currentChatId', chatId);
+          });
         });
       });
 
@@ -87,13 +87,37 @@ describe('Chat API Integration Tests', () => {
         cy.log(`📝 Fetching chats for userAzureId: ${userAzureId}`);
 
         cy.wrap(null).then(() => {
-          return chatService.getChats(userAzureId)
-            .then((response) => {
-              cy.log(`📨 Get Chats Response: ${JSON.stringify(response, null, 2)}`);
-              expect(response.StatusCode, 'Get chats response status should be 200').to.eq(200);
-              expect(response.Data, 'Response should contain chats array').to.be.an('array');
-              cy.log(`✅ Successfully retrieved ${response.Data.length} chats`);
-            });
+          return chatService.getChats(userAzureId).then((response) => {
+            cy.log(`📨 Get Chats Response: ${JSON.stringify(response, null, 2)}`);
+            expect(response.StatusCode, 'Get chats response status should be 200').to.eq(200);
+            expect(response.Data, 'Response should contain chats array').to.be.an('array');
+            cy.log(`✅ Successfully retrieved ${response.Data.length} chats`);
+          });
+        });
+      });
+
+      /**
+       * NEW TEST FOR GetChatById
+       */
+      it('GET /api/Chat/GetChatById - Should retrieve details for a specific chat thread', () => {
+        const chatId = Cypress.env('currentChatId');
+
+        if (!chatId) {
+          throw new Error('❌ Chat ID not found in environment variables');
+        }
+
+        cy.log('🔄 Starting getChatById process');
+        cy.log(`📝 Fetching details for chatId: ${chatId}`);
+
+        cy.wrap(null).then(() => {
+          return chatService.getChatById(userAzureId, chatId).then((response) => {
+            cy.log(`📨 Get Chat By ID Response: ${JSON.stringify(response, null, 2)}`);
+            expect(response.StatusCode, 'getChatById response status should be 200').to.eq(200);
+            expect(response.Data, 'Response should contain chat data').to.be.an('object');
+            // Example check for the chat ID
+            expect(response.Data.ChatThreadItem, 'Expected a ChatThreadItem').to.have.property('Id', chatId);
+            cy.log('✅ Successfully retrieved specific chat details');
+          });
         });
       });
     });
@@ -116,19 +140,18 @@ describe('Chat API Integration Tests', () => {
           chatId,
           content: testMessage,
           sendPush: false,
-          attachments: []
+          attachments: [],
         };
 
         cy.wrap(null).then(() => {
-          return chatService.sendMessage(sendMessageParams)
-            .then((response) => {
-              cy.log(`📨 Send Message Response: ${JSON.stringify(response, null, 2)}`);
-              expect(response.StatusCode, 'Send message response status should be 200').to.eq(200);
-              expect(response.Message, 'Response should confirm message sent').to.eq('Message sent');
-              cy.log('✅ Message sent successfully');
+          return chatService.sendMessage(sendMessageParams).then((response) => {
+            cy.log(`📨 Send Message Response: ${JSON.stringify(response, null, 2)}`);
+            expect(response.StatusCode, 'Send message response status should be 200').to.eq(200);
+            expect(response.Message, 'Response should confirm message sent').to.eq('Message sent');
+            cy.log('✅ Message sent successfully');
 
-              Cypress.env('currentMessageId', response.Data.MessageId);
-            });
+            Cypress.env('currentMessageId', response.Data.MessageId);
+          });
         });
       });
 
@@ -148,16 +171,15 @@ describe('Chat API Integration Tests', () => {
           userAzureId,
           chatId,
           messageId,
-          newContent: updatedMessage
+          newContent: updatedMessage,
         };
 
         cy.wrap(null).then(() => {
-          return chatService.updateMessage(updateMessageParams)
-            .then((response) => {
-              cy.log(`📨 Update Message Response: ${JSON.stringify(response, null, 2)}`);
-              expect(response.StatusCode, 'Update message response status should be 200').to.eq(200);
-              cy.log('✅ Message updated successfully');
-            });
+          return chatService.updateMessage(updateMessageParams).then((response) => {
+            cy.log(`📨 Update Message Response: ${JSON.stringify(response, null, 2)}`);
+            expect(response.StatusCode, 'Update message response status should be 200').to.eq(200);
+            cy.log('✅ Message updated successfully');
+          });
         });
       });
 
@@ -172,13 +194,12 @@ describe('Chat API Integration Tests', () => {
         cy.log(`📝 Getting messages for chat ${chatId}`);
 
         cy.wrap(null).then(() => {
-          return chatService.getMessages(userAzureId, chatId)
-            .then((response) => {
-              cy.log(`📨 Get Messages Response: ${JSON.stringify(response, null, 2)}`);
-              expect(response.StatusCode, 'Get messages response status should be 200').to.eq(200);
-              expect(response.Data, 'Response should contain messages array').to.be.an('array');
-              cy.log(`✅ Successfully retrieved ${response.Data.length} messages`);
-            });
+          return chatService.getMessages(userAzureId, chatId).then((response) => {
+            cy.log(`📨 Get Messages Response: ${JSON.stringify(response, null, 2)}`);
+            expect(response.StatusCode, 'Get messages response status should be 200').to.eq(200);
+            expect(response.Data, 'Response should contain messages array').to.be.an('array');
+            cy.log(`✅ Successfully retrieved ${response.Data.length} messages`);
+          });
         });
       });
 
@@ -194,13 +215,12 @@ describe('Chat API Integration Tests', () => {
         cy.log(`🗑️ Deleting message: ${messageId} from chat: ${chatId}`);
 
         cy.wrap(null).then(() => {
-          return chatService.deleteMessage(userAzureId, chatId, messageId, true)
-            .then((response) => {
-              cy.log(`📨 Delete Message Response: ${JSON.stringify(response, null, 2)}`);
-              expect(response.StatusCode, 'Delete message response status should be 200').to.eq(200);
-              expect(response.Message, 'Response should confirm message deleted').to.eq('Message deleted successfully');
-              cy.log('✅ Message deleted successfully');
-            });
+          return chatService.deleteMessage(userAzureId, chatId, messageId, true).then((response) => {
+            cy.log(`📨 Delete Message Response: ${JSON.stringify(response, null, 2)}`);
+            expect(response.StatusCode, 'Delete message response status should be 200').to.eq(200);
+            expect(response.Message, 'Response should confirm message deleted').to.eq('Message deleted successfully');
+            cy.log('✅ Message deleted successfully');
+          });
         });
       });
     });
@@ -208,46 +228,44 @@ describe('Chat API Integration Tests', () => {
     describe('Participant Management', () => {
       it('POST /api/Chat/AddParticipant - Should add new participant to the chat thread', () => {
         const chatId = Cypress.env('currentChatId');
-    
+
         if (!chatId) {
           throw new Error('❌ Chat ID not found in environment variables');
         }
-    
+
         cy.log('🔄 Starting process to add participant');
         cy.log(`📝 Adding participant with ID: ${newParticipantId} to chat: ${chatId}`);
-    
+
         cy.wrap(null).then(() => {
-          return chatService.addParticipant(userAzureId, chatId, newParticipantId)
-            .then((response) => {
-              cy.log(`📨 Add Participant Response: ${JSON.stringify(response, null, 2)}`);
-              expect(response.StatusCode, 'Add participant response status should be 200').to.eq(200);
-              expect(response.Message, 'Response should confirm participant added').to.eq('Participant added successfully');
-              cy.log('✅ Participant added to chat successfully');
-    
-              Cypress.env('participantToRemoveId', newParticipantId);
-            });
+          return chatService.addParticipant(userAzureId, chatId, newParticipantId).then((response) => {
+            cy.log(`📨 Add Participant Response: ${JSON.stringify(response, null, 2)}`);
+            expect(response.StatusCode, 'Add participant response status should be 200').to.eq(200);
+            expect(response.Message, 'Response should confirm participant added').to.eq('Participant added successfully');
+            cy.log('✅ Participant added to chat successfully');
+
+            Cypress.env('participantToRemoveId', newParticipantId);
+          });
         });
       });
 
       it('POST /api/Chat/RemoveParticipant - Should remove participant from the chat thread', () => {
         const chatId = Cypress.env('currentChatId');
         const participantToRemoveId = Cypress.env('participantToRemoveId');
-    
+
         if (!chatId || !participantToRemoveId) {
           throw new Error('❌ Chat ID or Participant ID not found in environment variables');
         }
-    
+
         cy.log('🔄 Starting process to remove participant');
         cy.log(`📝 Removing participant with ID: ${participantToRemoveId} from chat: ${chatId}`);
-    
+
         cy.wrap(null).then(() => {
-          return chatService.removeParticipant(userAzureId, chatId, participantToRemoveId)
-            .then((response) => {
-              cy.log(`📨 Remove Participant Response: ${JSON.stringify(response, null, 2)}`);
-              expect(response.StatusCode, 'Remove participant response status should be 200').to.eq(200);
-              expect(response.Message, 'Response should confirm participant removed').to.eq('Participant removed successfully');
-              cy.log('✅ Participant removed from chat successfully');
-            });
+          return chatService.removeParticipant(userAzureId, chatId, participantToRemoveId).then((response) => {
+            cy.log(`📨 Remove Participant Response: ${JSON.stringify(response, null, 2)}`);
+            expect(response.StatusCode, 'Remove participant response status should be 200').to.eq(200);
+            expect(response.Message, 'Response should confirm participant removed').to.eq('Participant removed successfully');
+            cy.log('✅ Participant removed from chat successfully');
+          });
         });
       });
     });
@@ -265,23 +283,22 @@ describe('Chat API Integration Tests', () => {
 
         const deleteChatParams: DeleteChatParams = {
           userAzureId,
-          chatId
+          chatId,
         };
 
         cy.wrap(null).then(() => {
-          return chatService.deleteChat(deleteChatParams)
-            .then((response) => {
-              cy.log(`📨 Delete Chat Response: ${JSON.stringify(response, null, 2)}`);
-              expect(response.StatusCode, 'Delete chat response status should be 200').to.eq(200);
-              expect(response.Message, 'Response should confirm deletion').to.eq('Chat thread deleted successfully');
-              cy.log('✅ Chat deleted successfully');
-            });
+          return chatService.deleteChat(deleteChatParams).then((response) => {
+            cy.log(`📨 Delete Chat Response: ${JSON.stringify(response, null, 2)}`);
+            expect(response.StatusCode, 'Delete chat response status should be 200').to.eq(200);
+            expect(response.Message, 'Response should confirm deletion').to.eq('Chat thread deleted successfully');
+            cy.log('✅ Chat deleted successfully');
+          });
         });
       });
     });
   });
 
-  afterEach(function() {
+  afterEach(function () {
     cy.log(`📌 Test "${this.currentTest.title}" completed with status: ${this.currentTest.state}`);
   });
 });
