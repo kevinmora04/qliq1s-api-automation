@@ -1,5 +1,3 @@
-// cypress/e2e/chat/chat.test.cy.ts
-
 import { chatService, CreateChatParams, DeleteChatParams, SendMessageParams, UpdateMessageParams } from '../../services/chat';
 
 describe('Chat API Integration Tests', () => {
