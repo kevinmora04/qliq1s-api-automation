@@ -94,9 +94,6 @@ describe('Chat API Integration Tests', () => {
         });
       });
 
-      /**
-       * NEW TEST FOR GetChatById
-       */
       it('GET /api/Chat/GetChatById - Should retrieve details for a specific chat thread', () => {
         const chatId = Cypress.env('currentChatId');
 

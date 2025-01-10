@@ -2,6 +2,7 @@ import { defineConfig } from "cypress";
 
 export default defineConfig({
   e2e: {
+    projectId: "cf9cp3",
     setupNodeEvents(on, config) {
       // Get environment from command line or GitHub Actions
       const targetEnv = process.env.CYPRESS_ENV || 
