@@ -11,7 +11,7 @@ export default defineConfig({
 
       // Load environments configuration
       const environments = {
-        local: "http://localhost:5261/api",
+        local: "https://uat-api.qliq1s.com/api",
         uat: "https://uat-api.qliq1s.com/api",
         prod: "https://api.qliq1s.com/api"
       };
